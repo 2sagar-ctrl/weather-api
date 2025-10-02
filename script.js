@@ -104,13 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const forecastData = await forecastResponse.json();
       const aqiData = await aqiResponse.json();
 
-      updateUI(weatherData,forecastData,aqiData)
-
-
-
-
-
-
+      updateUI(weatherData, forecastData, aqiData);
     } catch (error) {
       console.error("Weather data fetch error:", error);
       showError(error.message);
@@ -175,40 +169,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dailyForecasts = processForecast(forecast.list);
     forecastContainer.innerHTML = " ";
-    dailyForecasts.forEach(day =>{
-        const card = document.createElement("div");
-        card.className = `p-4 rounded-2xl text-center card backdrop-blur-xl`;
-        card.innerHTML = `
-        <p class="font-bold text-lg">${new Date (day.dt_txt).toLocaleDateString ("en-US",{weekday:"short"})}</p>
-        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" alt="${day.weather[0].description}" class="w-16
+    dailyForecasts.forEach((day) => {
+      const card = document.createElement("div");
+      card.className = `p-4 rounded-2xl text-center card backdrop-blur-xl`;
+      card.innerHTML = `
+        <p class="font-bold text-lg">${new Date(day.dt_txt).toLocaleDateString(
+          "en-US",
+          { weekday: "short" }
+        )}</p>
+        <img src="https://openweathermap.org/img/wn/${
+          day.weather[0].icon
+        }@2x.png" alt="${day.weather[0].description}" class="w-16
 h-16 mx-auto">
-<p class="font-semibold">${Math.round(day.main.temps_max)}°/ ${Math.round(day.main.temps_min)}°</p>`;
-forecastContainer.appendChild(card);
-    })
+<p class="font-semibold">${Math.round(day.main.temps_max)}°/ ${Math.round(
+        day.main.temps_min
+      )}°</p>`;
+      forecastContainer.appendChild(card);
+    });
+
+updateNightAnimation(isNight,weatherConditionForBg);
+
+
+
+
   };
 
-const updateNightAnimation = (isNight,condition)=>{
-    animationContainer.innerHTML="";
-    if(!isNight) return;
+  const updateNightAnimation = (isNight, condition) => {
+    animationContainer.innerHTML = "";
+    if (!isNight) return;
 
-    if(condition === "Clear"){
-        for(let i=0; i<20; i++){
-            const star = document.createElement('div');
-            star.className='star';
-            star.style.top =`${Math.random()*100}%`;
-              star.style.left =`${Math.random()*100}%`;
-                star.style.width =`${Math.random()*2+1}px`;
-                star.style.height=star.style.width;
-                 star.style.animationDelay =`${Math.random()*5}s`;
-                  star.style.animationDuration =`${Math.random()*3+2}s`;
-                  animationContainer.appendChild(star);
-        }
+    if (condition === "Clear") {
+      for (let i = 0; i < 20; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.width = `${Math.random() * 2 + 1}px`;
+        star.style.height = star.style.width;
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        animationContainer.appendChild(star);
+      }
+    } else if (condition === "Rain" || condition === "Drizzle") {
+      for (let i = 0; i < 50; i++) {
+        const drop = document.createElement("div");
+        drop.className = "rain-drop";
+        drop.style.left = `${Math.random() * 100}%`;
+        drop.style.animationDelay = `${Math.random() * 2}s`;
+        drop.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+        animationContainer.appendChild(drop);
+      }
+    } else if (condition ==="Snow"){
+       for (let i = 0; i < 50; i++) {
+        const flake = document.createElement("div");
+        flake.className = "snowFlake";
+        flake.style.left = `${Math.random() * 100}%`;
+        flake.style.animationDelay = `${Math.random() * 10}s`;
+        flake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        flake.style.opacity = `${Math.random()*0.5+0.3}`
+        animationContainer.appendChild(flake);
+      } 
     }
-}
-
-
-
-
+  } 
 
   const getAqiInfo = (aqi) => {
     switch (aqi) {
@@ -294,6 +316,13 @@ const updateNightAnimation = (isNight,condition)=>{
     }
     return processed.slice(0, 5);
   };
+
+
+
+
+
+
+  
   const updateClock = (timezoneoffset) => {
     const now = new Data();
     const utc = now.getTime() + now.getTimezoneoffset() * 60000;
@@ -319,4 +348,17 @@ const updateNightAnimation = (isNight,condition)=>{
     errorMessageEl.textContent = message;
     errorModal.classList.remove("hidden");
   };
+
+  searchForm.addEventListener("submit",(e)=>{
+e.preventDefault();
+const city = cityInput.value.trim();
+if(city) fetchWeather({city});
+suggestionsBox.classList.add("hidden");
+cityInput.value="";
+  })
+
+
+cityInput.addEventListener("input",debounce(handleCityInput,300))
+
+
 });
