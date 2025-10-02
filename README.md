@@ -19,7 +19,7 @@ A responsive weather app that displays current conditions, 5-day forecast, and a
 
 **Prerequisites:**  
 - Web browser (Chrome, Edge, Firefox, etc.).
-- [OpenWeatherMap API](https://openweathermap.org/api) account/key.
+- 1d2aa3ffdde43c4e1a64036197f00b90 (https://openweathermap.org/api) account/key.
 
 **Steps:**
 1.git clone https://github.com/2sagar-ctrl/weather-api.git
