@@ -103,6 +103,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const weatherData = await weatherResponse.json();
       const forecastData = await forecastResponse.json();
       const aqiData = await aqiResponse.json();
+
+      updateUI(weatherData,forecastData,aqiData)
+
+
+
+
+
+
     } catch (error) {
       console.error("Weather data fetch error:", error);
       showError(error.message);
@@ -165,10 +173,42 @@ document.addEventListener("DOMContentLoaded", () => {
     airQualityEl.className = `font-bold px-3 py-1 rounded-full text-sm ${aqiInfo.color}`;
     healthRecommendationsEl.innerHTML = `<p class="text-gray-200 text-sm">${aqiInfo.recommendation}</p>`;
 
-const dailyForecasts = processForecast(forecast.list);
-
-
+    const dailyForecasts = processForecast(forecast.list);
+    forecastContainer.innerHTML = " ";
+    dailyForecasts.forEach(day =>{
+        const card = document.createElement("div");
+        card.className = `p-4 rounded-2xl text-center card backdrop-blur-xl`;
+        card.innerHTML = `
+        <p class="font-bold text-lg">${new Date (day.dt_txt).toLocaleDateString ("en-US",{weekday:"short"})}</p>
+        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" alt="${day.weather[0].description}" class="w-16
+h-16 mx-auto">
+<p class="font-semibold">${Math.round(day.main.temps_max)}°/ ${Math.round(day.main.temps_min)}°</p>`;
+forecastContainer.appendChild(card);
+    })
   };
+
+const updateNightAnimation = (isNight,condition)=>{
+    animationContainer.innerHTML="";
+    if(!isNight) return;
+
+    if(condition === "Clear"){
+        for(let i=0; i<20; i++){
+            const star = document.createElement('div');
+            star.className='star';
+            star.style.top =`${Math.random()*100}%`;
+              star.style.left =`${Math.random()*100}%`;
+                star.style.width =`${Math.random()*2+1}px`;
+                star.style.height=star.style.width;
+                 star.style.animationDelay =`${Math.random()*5}s`;
+                  star.style.animationDuration =`${Math.random()*3+2}s`;
+                  animationContainer.appendChild(star);
+        }
+    }
+}
+
+
+
+
 
   const getAqiInfo = (aqi) => {
     switch (aqi) {
@@ -220,25 +260,40 @@ const dailyForecasts = processForecast(forecast.list);
         };
     }
   };
-const processForecast=(forecastList)=>{
-const dailyData ={};
-forecastList.forEach(entry => {
-    const data = entry.dt_txt.split(' ')[0];
-    if(!dailyData[date]){
-        dailyData[date]={temps_max:[],temps_min: [], icons:{},entry:null}
+  const processForecast = (forecastList) => {
+    const dailyData = {};
+    forecastList.forEach((entry) => {
+      const data = entry.dt_txt.split(" ")[0];
+      if (!dailyData[date]) {
+        dailyData[date] = {
+          temps_max: [],
+          temps_min: [],
+          icons: {},
+          entry: null,
+        };
+      }
+      dailyData[date].temps_max.push(entry.main.temps_max);
+      dailyData[date].temps_min.push(entry.main.temps_min);
+      const icon = entry.weather[0].icon;
+      dailyData[date].icons[icon] = dailydata[date].icons[icon] || 0;
+      if (!dailyData[date].entry || entry.dt_txt.includes("12:00:00")) {
+        dailyData[date].entry = entry;
+      }
+    });
+
+    const processed = [];
+    for (const date in dailyData) {
+      const day = dailyData[date];
+      const mostCommonIcon = Object.keys(
+        day.icons.reduce((a, b) => (day.icons[a] > day.icons[b] ? a : b))
+      );
+      day.entry.weather[0].icon = mostCommonIcon;
+      day.entry.main.temps_max = Math.max(...day.temps_max);
+      day.entry.main.temps_min = Math.max(...day.temps_min);
+      processed.push(day.entry);
     }
-    dailyData[date].temps_max.push(entry.main.temps_max);
-     dailyData[date].temps_min.push(entry.main.temps_min);
-     const icon = entry.weather[0].icon;
-     dailyData[date].icons[icon]=(dailydata[date].icons[icon]||0);
-     if(!dailyData[date].entry || entry.dt_txt.includes("12:00:00")){
-        dailyData[date].entry=entry;
-     }
-});
-
-
-
-}
+    return processed.slice(0, 5);
+  };
   const updateClock = (timezoneoffset) => {
     const now = new Data();
     const utc = now.getTime() + now.getTimezoneoffset() * 60000;
