@@ -33,3 +33,51 @@ body{
     transform: translateY(-5px);
     box-shadow: 0 12px 24px rgba(0,0,0,0.25);
 }
+.modal-bg{
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: shooting-star-anim 5s linear infinite;
+
+}
+@keyframes shooting-star-anim {
+    from { 
+        transform: translate(0, 0); 
+        opacity: 1;
+    }
+    to { 
+        transform: translate(-500px, 0); 
+        opacity: 0;
+    }
+}
+.rain-drop{
+    position: absolute;
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.4));
+    animation: rain-anim 1s linear infinite;
+    bottom: 100%;
+}
+@keyframes rain-anim {
+    from {
+        transform: translateY(-10vh) translateX(0);
+    }
+    to{
+        transform: translateY(110vh) translateX(20px);
+    }
+}
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
