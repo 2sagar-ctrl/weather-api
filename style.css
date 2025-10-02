@@ -66,19 +66,37 @@ body{
         transform: translateY(110vh) translateX(20px);
     }
 }
-/* Custom scrollbar for better aesthetics */
-::-webkit-scrollbar {
-    width: 8px;
+/* Temperature Toggle Buttons */
+.temp-btn {
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  border: none;
 }
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+
+.temp-btn.active,
+.temp-btn:focus {
+  background-color: #2563eb !important;
+  color: #fff !important;
 }
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
+
+/* Simple Animation for stars if you want */
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: twinkle 2s infinite alternate;
 }
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.8;
+  }
 }
+
+/* Add your existing styling here as well */
+
 

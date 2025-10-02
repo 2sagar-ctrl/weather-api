@@ -1,25 +1,30 @@
 # Weather Forecast Web App
 
-A responsive weather app that displays current conditions, 5-day forecast, and air quality for any city worldwide. Users can search by city name, use their device location, and instantly switch between Celsius and Fahrenheit. Built with vanilla JavaScript, HTML, and CSS, integrating OpenWeatherMap APIs.
+A modern, responsive weather forecast web app that fetches and displays current weather, 5-day forecast, and air quality index using the OpenWeatherMap API. Features geolocation support, city search autocomplete, and temperature unit toggle (Celsius/Fahrenheit).
 
 ---
 
 ## Features
 
-- **City Search & Geolocation:** Get weather using a city or user location.
-- **Current Weather & Forecast:** Displays temperature, “feels like”, humidity, wind, pressure, and visibility.
-- **Air Quality Index:** Shows real-time AQI, with health recommendations.
-- **5-Day Forecast:** Daily highs/lows, weather icons.
-- **Error Handling:** Friendly modals for API/network problems, missing locations, etc.
-- **Loading State:** Clear UI feedback during API calls.
+- Search weather for any city worldwide or use device geolocation
+- View current weather, temperature, humidity, wind, pressure, and visibility
+- See sunrise and sunset times
+- 5-day forecast with daily high/low temps and weather icons
+- Air Quality Index (AQI) with health recommendations
+- Toggle temperature display between Celsius and Fahrenheit instantly
+- Dynamic backgrounds and animations reflect day/night and weather condition
+- Responsive design with error handling and loading states
 
 ---
 
-## Setup Instructions
+## Getting Started
 
-**Prerequisites:**  
-- Web browser (Chrome, Edge, Firefox, etc.).
-- 1d2aa3ffdde43c4e1a64036197f00b90 (https://openweathermap.org/api) account/key.
+### Prerequisites
 
-**Steps:**
-1.git clone https://github.com/2sagar-ctrl/weather-api.git
+- Modern web browser (Chrome, Firefox, Edge, Safari)
+- OpenWeatherMap API key (sign up for free: https://openweathermap.org/api)
+
+### Installation
+
+Clone or download this repository.
+https://github.com/2sagar-ctrl/weather-api.git
