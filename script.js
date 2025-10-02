@@ -103,6 +103,26 @@ if([weatherResponse, forecastResponse, aqiResponse].some(res => !res.ok)){
     if(weatherConditionForBg === "Clouds" && weather.clouds.all<20){
         weatherConditionForBg ="Clear";
     }
+    updateClock(weather.timezone);
+    clockInterval = setInterval(()=> updateClock(weather.timezone),1000);
+
+    const currentTimeUTC = weather.dt;
+    const sunriseUTC = weather.sys.sunrise;
+    const sunsetUTC = weather.sys.sunset;
+    const isNight = (currentTimeUTC< sunriseUTC || currentTimeUTC> sunsetUTC);
+
+    const backgroundSet = isNight? backgroundImageNight : backgroundImageDay;
+    document.body.style,backgroundImage = `url('${backgroundSet[weatherConditionForBg]|| backgroundSet.Default}')`;
+
+currentWeatherIconEl.src =`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`;
+cityNameEl.textContent= `${weather.name},${weather.sys.country}`;
+const localDate = new Data ((weather.dt+weather.timezone) *1000);
+currentDateEl.textContent = localDate.toLocalDataString("en-US",{weeday:"long",month:"long",day:"numeric",timezone:"UTC"});
+currentTempEl.textContent= `${Math.round(weather.main.temp)}°`;
+currentWeatherDescEl.textContent =weather.weather[0].description;
+
+const formatTime = (timestamp) => new Data(timestamp * 1000).toLocalTimeString
+("en-US",{hour:"2-digit",minute:"2-digit",hour12:true,timezone:"UTC"});
  }
 
  const updateClock = (timezoneoffset)=>{
