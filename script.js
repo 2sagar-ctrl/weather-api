@@ -1,3 +1,5 @@
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const OWM_API_KEY = "1d2aa3ffdde43c4e1a64036197f00b90";
   let clockInterval = null;
